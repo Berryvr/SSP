@@ -52,7 +52,6 @@ stages:
   
   - job: publish
     displayName: 'Publish files as artifacts'
-    dependsOn: 'migrate'
     pool:
       vmImage: $(vmImageName)
     steps:
