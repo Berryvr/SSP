@@ -79,13 +79,13 @@ namespace BiertijdBerry
 
                     // Add the Json message to the queue
                     var queueMessage = new CloudQueueMessage(json);
-                    queue.AddMessageAsync(queueMessage);
+                    await queue.AddMessageAsync(queueMessage);
 
-                    return new OkObjectResult("You will find your image at the following link: " + bloburl);
+                    return new OkObjectResult("Open the following link to download your BeerReport: " + bloburl);
                 } 
                 else
                 {
-                    return new NotFoundObjectResult("The city & country combination provided has not been found");
+                    return new NotFoundObjectResult("The city & country combination could not be found");
                 }
 
 

@@ -42,15 +42,9 @@ namespace BiertijdBerry
             if (responseMessage.IsSuccessStatusCode)
             {
                 Stream stream = await responseMessage.Content.ReadAsStreamAsync();
-
-                // Check if the the temprature is high enough to have a beer                     
+                   
                 string bier = checkForBier(queueMessage);
-
-                // Format the string to add the celcius degree symbol
-                string temperature = String.Format("Temp: {0} \u2103", queueMessage.temp.ToString());
-
-                // Draw on the image using the ImageHelper class
-                Stream renderedImage = AddTextToImage.AddText(stream, (temperature, (10, 20)), (bier, (10, 50)));
+                Stream renderedImage = AddTextToImage.AddText(stream, bier, 10, 50);
 
                 // Upload the image to the blob
                 await blockBlob.UploadFromStreamAsync(renderedImage);
@@ -68,7 +62,7 @@ namespace BiertijdBerry
                 bier = "It's always time for a beer";
             }
             else
-                bier = "Maybe something warmerr";
+                bier = "Maybe something warmer";
 
             return bier;
         }

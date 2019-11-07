@@ -1,31 +1,28 @@
-﻿using System.Drawing;
+﻿
+using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using System.IO;
-using Image = SixLabors.ImageSharp.Image;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Primitives;
 
 namespace BiertijdBerry
 {
     public static class AddTextToImage
     {
-        public static Stream AddText(Stream imageStream, params (string text, (float x, float y) position)[] texts)
+        public static Stream AddText(Stream imageStream, string text, int x, int y)
         {
             var image = Image.Load(imageStream);
-            SixLabors.ImageSharp.
-            var bitmap = new Bitmap(image.CloneAs<Bitmap>);
-            var graphics = Graphics.FromImage(bitmap);
-            var drawFont = new Font("Cambria", 20);
 
-            foreach (var (text, (x, y)) in texts)
-            {
-                graphics.DrawString(text, drawFont, Brushes.Black, x, y);
-            }
+            image.Mutate(img => { img.DrawText(text, SystemFonts.CreateFont("Verdana", 20), Rgba32.Black, new PointF(x, y)); }) ;
 
-            var memoryStream = new MemoryStream();
-            bitmap.Save(memoryStream, ImageFormat.Png);
+            var ms = new MemoryStream();
+            image.SaveAsPng(ms);
 
-            memoryStream.Position = 0;
+            ms.Position = 0;
 
-            return memoryStream;
+            return ms;
+
         }
     }
 }
