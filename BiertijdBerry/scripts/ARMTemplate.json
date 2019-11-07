@@ -80,7 +80,24 @@
             }
           ]
         }
-      }
+      },
+      "resources": [
+        {
+          "name": "appsettings",
+          "type": "config",
+          "apiVersion": "2015-08-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionsName'))]"
+          ],
+          "tags": {
+            "displayName": "appsettings"
+          },
+          "properties": {
+            "WeatherAPIKey": "52abf6f17ad3b20caa8f466327132436",
+            "MapsAPIKey": "nLMPsJmJprMIpoRJ6YNMajPA2Lq0jxqIYldSFPAyU8A"
+          }
+        }
+      ]
     }
   ]
 }
