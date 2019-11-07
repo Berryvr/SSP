@@ -1,6 +1,7 @@
 ﻿using System.Drawing;
-using System.Drawing.Imaging;
+using SixLabors.ImageSharp;
 using System.IO;
+using Image = SixLabors.ImageSharp.Image;
 
 namespace BiertijdBerry
 {
@@ -8,8 +9,9 @@ namespace BiertijdBerry
     {
         public static Stream AddText(Stream imageStream, params (string text, (float x, float y) position)[] texts)
         {
-            var image = Image.FromStream(imageStream);
-            var bitmap = new Bitmap(image);
+            var image = Image.Load(imageStream);
+            SixLabors.ImageSharp.
+            var bitmap = new Bitmap(image.CloneAs<Bitmap>);
             var graphics = Graphics.FromImage(bitmap);
             var drawFont = new Font("Cambria", 20);
 
