@@ -62,8 +62,8 @@ namespace BiertijdBerry
 
                     // Define the needed parameters for the image object
                     string blobName = String.Format("map-{0}-{1}-{2}.png", city, country, guid);
-                    string blobReference = "bierimage";
-                    string bloburl = String.Format("https://storageaccountssp95ec.blob.core.windows.net/bierimage/{0}", blobName);
+                    string blobReference = "biertijdblob";
+                    string bloburl = String.Format("https://storageaccountssp95ec.blob.core.windows.net/{0}/{1}",blobReference, blobName);
 
                     // Make the image object 
                     var imageObj = new Image(lon, lat, weather.main.temp, blobName, blobReference);

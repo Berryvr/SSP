@@ -15,7 +15,7 @@ namespace BiertijdBerry
     public static class FetchBierReport
     {
         [FunctionName("FetchBierReport")]
-        public static async System.Threading.Tasks.Task RunAsync([QueueTrigger("bierqueue", Connection = "AzureWebJobsStorage")]string myQueueItem, ILogger log)
+        public static async System.Threading.Tasks.Task RunAsync([QueueTrigger("mapqueue", Connection = "AzureWebJobsStorage")]string myQueueItem, ILogger log)
         {
             // Create the HttpClient
             var client = new HttpClient();
@@ -28,7 +28,7 @@ namespace BiertijdBerry
 
             // Retrieve container if it exists, create one if not
             CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
-            var container = blobClient.GetContainerReference("mapblob");
+            var container = blobClient.GetContainerReference("biertijdblob");
             await container.CreateIfNotExistsAsync();
 
             // Create the blob
