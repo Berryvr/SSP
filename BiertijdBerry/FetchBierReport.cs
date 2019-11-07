@@ -35,7 +35,7 @@ namespace BiertijdBerry
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(queueMessage.blobName);
 
             // Retrieve the picture for the given city using its lat and lon
-            var url = String.Format("https://atlas.microsoft.com/map/static/png?subscription-key={0}&api-version=1.0&center={1},{2}", Environment.GetEnvironmentVariable("MapsAPIKey"), queueStorageMessage.lon, queueStorageMessage.lat);
+            var url = String.Format("https://atlas.microsoft.com/map/static/png?subscription-key={0}&api-version=1.0&center={1},{2}", Environment.GetEnvironmentVariable("MapsAPIKey"), queueMessage.lon, queueMessage.lat);
             client.BaseAddress = new Uri(url);
             HttpResponseMessage responseMessage = await client.GetAsync(url);
 
@@ -62,14 +62,15 @@ namespace BiertijdBerry
         public static string checkForBier(QueueMessage queueStorageMessage)
         {
             const double BIERTEMPERATUUR = 0.00;
-            string bier;
-
+            string bier = "";
             if (queueStorageMessage.temp >= BIERTEMPERATUUR)
             {
-                return bier = "It's always time for a beer";
+                bier = "It's always time for a beer";
             }
             else
-                return bier = "Maybe something warmerr";
+                bier = "Maybe something warmerr";
+
+            return bier;
         }
     }
 
