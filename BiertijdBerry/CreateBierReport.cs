@@ -32,8 +32,8 @@ namespace BiertijdBerry
             if (city != null && country != null)
             {
 
-
-                var weatherApiUrl = String.Format("http://api.openweathermap.org/data/2.5/weather?q={0},{1}&units=metric&appid={2}", city, country, "52abf6f17ad3b20caa8f466327132436");
+                
+                var weatherApiUrl = String.Format("http://api.openweathermap.org/data/2.5/weather?q={0},{1}&units=metric&appid={2}", city, country, Environment.GetEnvironmentVariable("52abf6f17ad3b20caa8f466327132436"));
                 Weather weather = await GetWeatherData(weatherApiUrl);
                 HttpResponseMessage responseMessageWeatherApi = await client.GetAsync(weatherApiUrl);
 
@@ -63,7 +63,7 @@ namespace BiertijdBerry
                     // Define the needed parameters for the image object
                     string blobName = String.Format("map-{0}-{1}-{2}.png", city, country, guid);
                     string blobReference = "bierimage";
-                    string bloburl = String.Format("https://storageaccountssp95ec.blob.core.windows.net/bierimage/{1}", blobName);
+                    string bloburl = String.Format("https://storageaccountssp95ec.blob.core.windows.net/bierimage/{0}", blobName);
 
                     // Make the image object 
                     var imageObj = new Image(lon, lat, weather.main.temp, blobName, blobReference);
