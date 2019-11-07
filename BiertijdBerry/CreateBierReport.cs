@@ -33,7 +33,7 @@ namespace BiertijdBerry
             {
 
                 
-                var weatherApiUrl = String.Format("http://api.openweathermap.org/data/2.5/weather?q={0},{1}&units=metric&appid={2}", city, country, Environment.GetEnvironmentVariable("52abf6f17ad3b20caa8f466327132436"));
+                var weatherApiUrl = String.Format("http://api.openweathermap.org/data/2.5/weather?q={0},{1}&units=metric&appid={2}", city, country, Environment.GetEnvironmentVariable("WeatherAPIKey"));
                 Weather weather = await GetWeatherData(weatherApiUrl);
                 HttpResponseMessage responseMessageWeatherApi = await client.GetAsync(weatherApiUrl);
 
