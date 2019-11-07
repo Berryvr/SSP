@@ -1,0 +1,86 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {    
+  },
+  "variables": {
+    "baseName": "berrybieropdracht",
+
+    "apiHostingPlanName": "[concat(variables('baseName'), '-plan')]",
+
+    "storageAccountName": "[concat(variables('baseName'))]",
+
+    "functionsName": "[concat(variables('baseName'), '-functie')]"
+  },
+  "resources": [
+
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "name": "[variables('storageAccountName')]",
+      "apiVersion": "2015-06-15",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accountType": "Standard_LRS"
+      }
+    },
+
+    {
+      "apiVersion": "2014-06-01",
+      "location": "[resourceGroup().location]",
+      "name": "[variables('apiHostingPlanName')]",
+      "properties": {
+        "name": "[variables('apiHostingPlanName')]",
+        "sku": "Free",
+        "workerSize": "Small",
+        "numberOfWorkers": 1
+      },
+      "type": "Microsoft.Web/serverfarms"
+    },
+    {
+      "apiVersion": "2016-08-01",
+      "type": "Microsoft.Web/sites",
+      "name": "[variables('functionsName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('apiHostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]"
+      ],
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('apiHostingPlanName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "AzureWebJobsDashboard",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').key1)]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').key1)]"
+            },
+			{
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2015-06-15').key1)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionsName'))]"
+            },
+            {
+              "name": "MapsAPIKey",
+              "value": "nLMPsJmJprMIpoRJ6YNMajPA2Lq0jxqIYldSFPAyU8A"
+            },
+            {
+              "name": "WeatherAPIKey",
+              "value": "52abf6f17ad3b20caa8f466327132436"
+            },
+			{
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~1"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
